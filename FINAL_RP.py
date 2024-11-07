@@ -118,25 +118,25 @@ def sample(W_l,c_l,W_r, c_r, p_m, u_m, s):
     d_l, u_l, p_l = W_l
     d_r, u_r, p_r = W_r
     if s<= u_m:
-        #точка лежит слева от контактного разрыва
-        if p_m <= p_l: #слева -- волна разрежения
-            head_speed_l = u_l - c_l   #скорость головной характеристики волны разрежения
+        
+        if p_m <= p_l: 
+            head_speed_l = u_l - c_l   
             
-            if s<= head_speed_l: #точка лежит слева от волны -- все значения из левой ячейки
+            if s<= head_speed_l: 
                 d = d_l
                 u = u_l
                 p = p_l
             else:
-                c_m_l = c_l*(p_m/p_l)**g_m_1_over_2g #скорость звука справа от левой волны
-                tail_speed_l = u_m - c_m_l        #скорость замыкающей характеристики волны разрежения
+                c_m_l = c_l*(p_m/p_l)**g_m_1_over_2g 
+                tail_speed_l = u_m - c_m_l      
                 
-                if s>=tail_speed_l:              #точка лежит между волной и контактным разрывом
+                if s>=tail_speed_l:             
                     
                     d = d_l*(p_m/p_l)**(1./gamma)
                     u = u_m
                     p = p_m
                 
-                else:                              #точка лежит в веере волны разрежения
+                else:                            
                     u = g_p_1_over_2_inv*(c_l+g_m_1_over_2*u_l+s)
                     c = u - s
                     d = d_l*(c/c_l)**g_m_1_over_2_inv
@@ -144,52 +144,51 @@ def sample(W_l,c_l,W_r, c_r, p_m, u_m, s):
         
         else:       #слева -- скачок 
             shock_ratio = p_m/p_l
-            s_l = u_l - c_l*(g_p_1_over_2g*shock_ratio + g_m_1_over_2g)**0.5 #скорость скачка
-            
-            if s<= s_l: #точка лежит слева от скачка -- все значения из левой ячейки
+            s_l = u_l - c_l*(g_p_1_over_2g*shock_ratio + g_m_1_over_2g)**0.5 
+            if s<= s_l:
                 d = d_l
                 u = u_l
                 p = p_l
-            else:   #точка лежит между скачком и контактным разрывом
+            else:  
                 
                 d = d_l*(shock_ratio + (gamma-1)/(gamma+1))/((gamma-1)/(gamma+1)*shock_ratio +1.)
                 u = u_m
                 p = p_m
     #----------------------------------------------------------------------------------------------------
-    else:              #точка лежит справа от контактного разрыва
+    else:            
         
         if p_m > p_r:   #справа -- скачок
             shock_ratio = p_m/p_r
-            s_r = u_r + c_r*(g_p_1_over_2g*shock_ratio + g_m_1_over_2g)**0.5 #скорость скачка
+            s_r = u_r + c_r*(g_p_1_over_2g*shock_ratio + g_m_1_over_2g)**0.5 
             
-            if s >= s_r: #точка лежит справа от скачка -- все значения из правой ячейки
+            if s >= s_r: 
                 d = d_r
                 u = u_r
                 p = p_r
-            else:   #точка лежит между скачком и контактным разрывом
+            else:  
                 
                 d = d_r*(shock_ratio + g_m_1_over_g_p_1)/(g_m_1_over_g_p_1*shock_ratio +1.)
                 u = u_m
                 p = p_m
-        else:           #справа -- волна
+        else:          
             
-            head_speed_r = u_r + c_r   #скорость головной характеристики волны разрежения
+            head_speed_r = u_r + c_r   
             
-            if s >= head_speed_r: #точка лежит справа от волны -- все значения из правой ячейки
+            if s >= head_speed_r:
                 d = d_r
                 u = u_r
                 p = p_r
             else:
-                c_m_r = c_r*(p_m/p_r)**g_m_1_over_2g #скорость звука слева от правой волны
-                tail_speed_r = u_m + c_m_r           #скорость замыкающей характеристики волны разрежения
+                c_m_r = c_r*(p_m/p_r)**g_m_1_over_2g
+                tail_speed_r = u_m + c_m_r          
                 
-                if s<=tail_speed_r:              #точка лежит между контактным разрывом и волной
+                if s<=tail_speed_r:             
                     
                     d = d_r*(p_m/p_r)**(1/gamma)
                     u = u_m
                     p = p_m
                 
-                else:                              #точка лежит в веере волны разрежения
+                else:                              
                     u = g_p_1_over_2_inv*(-c_r+g_m_1_over_2*u_r+s)
                     c = -u + s
                     d = d_r*(c/c_r)**g_m_1_over_2_inv
@@ -202,7 +201,7 @@ def get_S_max(W_l,c_l,W_r, c_r, p_m, u_m):
     d_l, u_l, p_l = W_l
     d_r, u_r, p_r = W_r
     S_l,S_r = 0,0
-    if p_m <= p_l: #слева -- волна разрежения
+    if p_m <= p_l:
         S_l = u_l - c_l
     else :
         shock_ratio = p_m/p_l
